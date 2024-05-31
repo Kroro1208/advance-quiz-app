@@ -1,5 +1,7 @@
+import { Heading } from "@chakra-ui/react";
+
 export const App = () => {
   return (
-    <div>main</div>
+    <Heading>main</Heading>
   );
 }
