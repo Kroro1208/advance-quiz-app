@@ -9,6 +9,8 @@ import axios from "axios";
 import { FetchQuizParams, QuizCategory, QuizDifficulty, QuizType } from "./types/quiz-type";
 import { SetQuizCategory } from "./features/SetQuizCategory";
 import { QuizAPI } from "./api/quiz-api";
+import { SetQuizDifficulty } from "./features/SetQuizDifficulty";
+import { Play } from "./features/Play";
 
 enum Step {
   SetQuestionQty,
@@ -56,7 +58,6 @@ export const App = () => {
               setStep(Step.SetQuestionCategory);
             }} />
         );
-
       case Step.SetQuestionCategory:
         return (<SetQuizCategory
           onClickNext={(category: string) => {
@@ -67,8 +68,19 @@ export const App = () => {
             setStep(Step.SetQuestionDifficulty);
           }}
           categories={categories} />);
+      case Step.SetQuestionDifficulty:
+        return (
+          <SetQuizDifficulty
+            onClickNext={(difficulty: QuizDifficulty) => {
+              setQuizParams({
+                ...quizParams,
+                difficulty
+              })
+              setStep(Step.Play);
+            }} />
+        );
       case Step.Play:
-        return <></>
+        return <Play />
       case Step.Score:
         return <></>
       default:
