@@ -4,7 +4,7 @@ import { Button, Flex, Heading, Radio, RadioGroup, SimpleGrid } from "@chakra-ui
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 
-export const SetQuestionCategory = (p: { categories: QuizCategory[] }) => {
+export const SetQuestionCategory = (p: { categories: QuizCategory[], onClickNext: (categoryId: string) => void }) => {
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>(p.categories[0].id.toString());
     const radioList = p.categories.map((category: QuizCategory) => {
         return <Radio value={category.id.toString()}>{category.name}</Radio>
@@ -24,7 +24,7 @@ export const SetQuestionCategory = (p: { categories: QuizCategory[] }) => {
                 </SimpleGrid>
             </RadioGroup>
             <Button
-                onClick={() => onClickNext()}
+                onClick={() => p.onClickNext(selectedCategoryId)}
                 mt={"20"} textColor={"white"} bgColor={"red"} position={"absolute"} top={"80%"} right={"10%"}
                 rightIcon={<ArrowForwardIcon />}>
                 難易度を選ぶ

@@ -32,7 +32,10 @@ export const App = () => {
   const [categories, setCategories] = useState<QuizCategory[]>([]);
   useEffect(() => {
     (async () => {
-      setCategories(await QuizAPI.fetchCategories());
+      setCategories([{
+        id: -1,
+        name: "MIxed"
+      }, ...(await QuizAPI.fetchCategories())]);
     })();
   }, []);
 
@@ -46,7 +49,8 @@ export const App = () => {
     switch (step) {
       case Step.SetQuestionQty:
         return (
-          <SetQuestionQty defaultValue={10} max={30} min={5} step={5}
+          <SetQuestionQty
+            defaultValue={10} max={30} min={5} step={5}
             onClickNext={(amount: number) => {
               setQuizParams({ ...quizParams, amount });
               setStep(Step.SetQuestionCategory);
@@ -54,7 +58,15 @@ export const App = () => {
         );
 
       case Step.SetQuestionCategory:
-        return <SetQuestionCategory categories={categories} />
+        return (<SetQuestionCategory
+          onClickNext={(category: string) => {
+            setQuizParams({
+              ...quizParams,
+              category: category === "-1" ? "" : category
+            });
+            setStep(Step.SetQuestionDifficulty);
+          }}
+          categories={categories} />);
       case Step.Play:
         return <></>
       case Step.Score:

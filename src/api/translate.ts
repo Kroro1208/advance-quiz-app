@@ -4,7 +4,7 @@ export const categoryTranslationMap: { [key: string]: string } = {
   "Entertainment: Film": "エンターテイメント: 映画",
   "Entertainment: Music": "エンターテイメント: 音楽",
   "Entertainment: Musicals & Theatres":
-    "エンターテイメント: ミュージカル & 劇場",
+  "エンターテイメント: ミュージカル & 劇場",
   "Entertainment: Television": "エンターテイメント: テレビ",
   "Entertainment: Video Games": "エンターテイメント: ビデオゲーム",
   "Entertainment: Board Games": "エンターテイメント: ボードゲーム",
