@@ -4,7 +4,7 @@ import { Button, Flex, Heading, Radio, RadioGroup, SimpleGrid } from "@chakra-ui
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 
-export const SetQuestionCategory = (p: { categories: QuizCategory[], onClickNext: (categoryId: string) => void }) => {
+export const SetQuizCategory = (p: { categories: QuizCategory[], onClickNext: (categoryId: string) => void }) => {
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>(p.categories[0].id.toString());
     const radioList = p.categories.map((category: QuizCategory) => {
         return <Radio value={category.id.toString()}>{category.name}</Radio>

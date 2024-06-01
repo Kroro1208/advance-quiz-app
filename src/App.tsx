@@ -4,10 +4,10 @@ import bubble from "./assets/bubble.jpg"
 
 import "../global.css"
 import { useEffect, useState } from "react";
-import { SetQuestionQty } from "./features/SetQuestionQty";
+import { SetQuizQuantity } from "./features/SetQuizQuantity";
 import axios from "axios";
 import { FetchQuizParams, QuizCategory, QuizDifficulty, QuizType } from "./types/quiz-type";
-import { SetQuestionCategory } from "./features/SetQuestionCategory";
+import { SetQuizCategory } from "./features/SetQuizCategory";
 import { QuizAPI } from "./api/quiz-api";
 
 enum Step {
@@ -33,7 +33,7 @@ export const App = () => {
   useEffect(() => {
     (async () => {
       setCategories([{
-        id: -1,
+        id: -1, // フェッチしてきたdataの中にMixedはないから特別な値として手動で追加
         name: "MIxed"
       }, ...(await QuizAPI.fetchCategories())]);
     })();
@@ -49,7 +49,7 @@ export const App = () => {
     switch (step) {
       case Step.SetQuestionQty:
         return (
-          <SetQuestionQty
+          <SetQuizQuantity
             defaultValue={10} max={30} min={5} step={5}
             onClickNext={(amount: number) => {
               setQuizParams({ ...quizParams, amount });
@@ -58,11 +58,11 @@ export const App = () => {
         );
 
       case Step.SetQuestionCategory:
-        return (<SetQuestionCategory
+        return (<SetQuizCategory
           onClickNext={(category: string) => {
             setQuizParams({
               ...quizParams,
-              category: category === "-1" ? "" : category
+              category: category === "-1" ? "" : category // Mixedならカテゴリは空文字
             });
             setStep(Step.SetQuestionDifficulty);
           }}

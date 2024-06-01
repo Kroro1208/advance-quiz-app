@@ -10,7 +10,7 @@ interface Props {
     onClickNext: (amount: number) => void;
 }
 
-export const SetQuestionQty = ({ defaultValue, max, min, step, onClickNext }: Props) => {
+export const SetQuizQuantity = ({ defaultValue, max, min, step, onClickNext }: Props) => {
     const [sliderValue, setSliderValue] = useState<number>(defaultValue)
 
     const renderMarks = (): JSX.Element[] => {
