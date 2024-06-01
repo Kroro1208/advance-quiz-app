@@ -6,14 +6,14 @@ import "../global.css"
 import { useEffect, useState } from "react";
 import { SetQuizQuantity } from "./features/SetQuizQuantity";
 import axios from "axios";
-import { FetchQuizParams, QuizCategory, QuizDifficulty, QuizType } from "./types/quiz-type";
+import { FetchQuizParams, QuizCategory, QuizDifficulty, QuizItem, QuizType } from "./types/quiz-type";
 import { SetQuizCategory } from "./features/SetQuizCategory";
 import { QuizAPI } from "./api/quiz-api";
 import { SetQuizDifficulty } from "./features/SetQuizDifficulty";
 import { Play } from "./features/Play";
 
 enum Step {
-  SetQuestionQty,
+  SetQuestionQuantity,
   SetQuestionCategory,
   SetQuestionDifficulty,
   Play,
@@ -23,7 +23,7 @@ enum Step {
 axios.get("https//trivia", { params: { amount: 2, category: "science" } })
 
 export const App = () => {
-  const [step, setStep] = useState<Step>(Step.SetQuestionQty);
+  const [step, setStep] = useState<Step>(Step.SetQuestionQuantity);
   const [quizParams, setQuizParams] = useState<FetchQuizParams>({
     amount: 0,
     category: "",
@@ -32,6 +32,9 @@ export const App = () => {
   });
 
   const [categories, setCategories] = useState<QuizCategory[]>([]);
+  const [quiz, setQuiz] = useState<QuizItem[]>([]);
+
+
   useEffect(() => {
     (async () => {
       setCategories([{
@@ -49,7 +52,7 @@ export const App = () => {
 
   const renderScreenByStep = () => {
     switch (step) {
-      case Step.SetQuestionQty:
+      case Step.SetQuestionQuantity:
         return (
           <SetQuizQuantity
             defaultValue={10} max={30} min={5} step={5}
@@ -71,16 +74,24 @@ export const App = () => {
       case Step.SetQuestionDifficulty:
         return (
           <SetQuizDifficulty
-            onClickNext={(difficulty: QuizDifficulty) => {
-              setQuizParams({
+            onClickNext={async (difficulty: QuizDifficulty) => {
+              const params = {
                 ...quizParams,
                 difficulty
-              })
-              setStep(Step.Play);
+              }
+              setQuizParams(params);
+              const quizResponse = await QuizAPI.fetchQuiz(params);
+              if (quizResponse.length > 0) {
+                setQuiz(quizResponse);
+                setStep(Step.Play);
+              } else {
+                alert(`あなたが選択したカテゴリでは、あなたが希望する問題数${params.amount}門のクイズが見つかりませんでした`);
+                setStep(Step.SetQuestionQuantity);
+              };
             }} />
         );
       case Step.Play:
-        return <Play />
+        return <Play quiz={quiz} />
       case Step.Score:
         return <></>
       default:
