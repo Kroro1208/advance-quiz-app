@@ -8,13 +8,17 @@ import invalidAnim from "../assets/invalid.json";
 export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
     const [currentQuizItemIndex, setCurrentQuizItemIndex] = useState<number>(0);
     const currentQuizItem: QuizItem = p.quiz[currentQuizItemIndex];
-    const AnswersList: string[] = [
-        currentQuizItem.correct_answer,
-        ...currentQuizItem.incorrect_answers
-    ];
-
+    const [answersList, setAnswersList] = useState<string[]>([]);
     const [answer, setAnswer] = useState<string>();
     const [questionStatus, setQuestionStatus] = useState<"valid" | "invalid" | "unanswered">("unanswered");
+
+    useEffect(() => {
+        setAnswersList([
+            currentQuizItem.correct_answer,
+            ...currentQuizItem.incorrect_answers
+        ].sort(() => Math.random() - 0.5))
+    }, [currentQuizItemIndex])
+
     useEffect(() => {
         if (answer) {
             if (isValidAnswer(answer)) {
@@ -30,7 +34,7 @@ export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
         return answer === currentQuizItem.correct_answer;
     };
 
-    const radioList = AnswersList.map((answerList: string) => {
+    const radioList = answersList.map((answerList: string) => {
         return (
             <Radio
                 key={answerList}
