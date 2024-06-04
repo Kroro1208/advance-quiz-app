@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { QuizItem } from "../types/quiz-type"
-import { Flex, Heading, Radio, RadioGroup, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Radio, RadioGroup, SimpleGrid, Text } from "@chakra-ui/react";
 import Lottie from "lottie-react";
 import validAnim from "../assets/valid.json";
 import invalidAnim from "../assets/invalid.json";
@@ -11,6 +11,7 @@ export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
     const [answersList, setAnswersList] = useState<string[]>([]);
     const [answer, setAnswer] = useState<string>();
     const [questionStatus, setQuestionStatus] = useState<"valid" | "invalid" | "unanswered">("unanswered");
+    const [progress, setProgress] = useState<boolean[]>([]);
 
     useEffect(() => {
         setAnswersList([
@@ -21,11 +22,13 @@ export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
 
     useEffect(() => {
         if (answer) {
-            if (isValidAnswer(answer)) {
+            const isValid = isValidAnswer(answer);
+            if (isValid) {
                 setQuestionStatus("valid");
             } else {
                 setQuestionStatus("invalid");
             }
+            setProgress([...progress, isValid]);
         }
     }, [answer]);
 
@@ -33,6 +36,18 @@ export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
     const isValidAnswer = (answer: string): boolean => {
         return answer === currentQuizItem.correct_answer;
     };
+
+    const renderProgressBar = () => {
+        return (
+            <HStack>
+                {p.quiz.map((_, index) => {
+                    return <Box key={index} h={3} w={25} backgroundColor={
+                        index >= currentQuizItemIndex ? "gray.200" : progress[index] ? "green.300" : "red.300"
+                    } />
+                })}
+            </HStack>
+        )
+    }
 
     const radioList = answersList.map((answerList: string) => {
         return (
@@ -49,6 +64,7 @@ export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
     })
     return (
         <Flex direction={"column"} alignItems={"center"} justify={"center"}>
+            {renderProgressBar()}
             <Heading fontSize={"3xl"} mt={100} mb={20} dangerouslySetInnerHTML={{ __html: currentQuizItem.question }} />
             <RadioGroup value={answer} onChange={questionStatus === "unanswered" ? setAnswer : undefined}>
                 <SimpleGrid columns={2} spacing={4}>
