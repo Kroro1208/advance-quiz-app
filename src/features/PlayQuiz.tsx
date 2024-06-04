@@ -48,7 +48,7 @@ export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
     return (
         <Flex direction={"column"} alignItems={"center"} justify={"center"}>
             <Heading fontSize={"3xl"} mt={100} mb={20} dangerouslySetInnerHTML={{ __html: currentQuizItem.question }} />
-            <RadioGroup value={answer} onChange={setAnswer}>
+            <RadioGroup value={answer} onChange={questionStatus === "unanswered" ? setAnswer : undefined}>
                 <SimpleGrid columns={2} spacing={4}>
                     {radioList}
                 </SimpleGrid>
