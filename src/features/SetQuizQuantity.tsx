@@ -28,7 +28,7 @@ export const SetQuizQuantity = ({ defaultValue, max, min, step, onClickNext }: P
                 <Heading as="h1" fontSize="3xl" mb={20}>
                     いくつの問題にチャレンジしますか ?
                 </Heading>
-                <Slider value={sliderValue} maxW={600} max={max} min={min} step={step} aria-label='slider-ex-6' colorScheme="orange"
+                <Slider value={sliderValue} maxW={600} max={max} min={min} step={step} aria-label='slider-ex-6' colorScheme="pink"
                     onChange={(val) => setSliderValue(val)}>
                     {renderMarks()}
                     <SliderTrack>
