@@ -40,7 +40,9 @@ export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
                 key={answerList}
                 value={answerList}
             >
-                <Text dangerouslySetInnerHTML={{ __html: answerList }}>
+                <Text
+                    color={questionStatus === "unanswered" ? "black" : isValidAnswer(answerList) ? "green.400" : "red.400"}
+                    dangerouslySetInnerHTML={{ __html: answerList }}>
                 </Text>
             </Radio>
         )
