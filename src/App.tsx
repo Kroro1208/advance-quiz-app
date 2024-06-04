@@ -10,7 +10,7 @@ import { FetchQuizParams, QuizCategory, QuizDifficulty, QuizItem, QuizType } fro
 import { SetQuizCategory } from "./features/SetQuizCategory";
 import { QuizAPI } from "./api/quiz-api";
 import { SetQuizDifficulty } from "./features/SetQuizDifficulty";
-import { Play } from "./features/Play";
+import { PlayQuiz } from "./features/PlayQuiz";
 
 enum Step {
   SetQuestionQuantity,
@@ -91,7 +91,7 @@ export const App = () => {
             }} />
         );
       case Step.Play:
-        return <Play quiz={quiz} />
+        return <PlayQuiz quiz={quiz} />
       case Step.Score:
         return <></>
       default:
