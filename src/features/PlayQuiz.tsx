@@ -7,11 +7,11 @@ import invalidAnim from "../assets/invalid.json";
 
 export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
     const [currentQuizItemIndex, setCurrentQuizItemIndex] = useState<number>(0);
-    const currentQuizItem: QuizItem = p.quiz[currentQuizItemIndex];
     const [answersList, setAnswersList] = useState<string[]>([]);
     const [answer, setAnswer] = useState<string>();
     const [questionStatus, setQuestionStatus] = useState<"valid" | "invalid" | "unanswered">("unanswered");
     const [progress, setProgress] = useState<boolean[]>([]);
+    const currentQuizItem: QuizItem = p.quiz[currentQuizItemIndex];
 
     useEffect(() => {
         setAnswersList([
