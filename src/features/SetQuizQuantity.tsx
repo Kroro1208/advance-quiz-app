@@ -21,14 +21,13 @@ export const SetQuizQuantity = ({ defaultValue, max, min, step, onClickNext }: P
         return marks;
     };
 
-
     return (
         <>
             <Flex direction={"column"} alignItems={"center"}>
                 <Heading as="h1" fontSize="3xl" mb={20}>
                     いくつの問題にチャレンジしますか ?
                 </Heading>
-                <Slider value={sliderValue} maxW={600} max={max} min={min} step={step} aria-label='slider-ex-6' colorScheme="pink"
+                <Slider value={sliderValue} maxW={600} max={max} min={min} step={step} aria-label='slider-ex-6' colorScheme="green"
                     onChange={(val) => setSliderValue(val)}>
                     {renderMarks()}
                     <SliderTrack>

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { QuizItem } from "../types/quiz-type"
+import { QuizItem } from "../../types/quiz-type"
 import { Box, Flex, Heading, HStack, Radio, RadioGroup, SimpleGrid, Text } from "@chakra-ui/react";
 import Lottie from "lottie-react";
-import validAnim from "../assets/valid.json";
-import invalidAnim from "../assets/invalid.json";
+import validAnim from "../../assets/valid.json";
+import invalidAnim from "../../assets/invalid.json";
+import { Timer } from "./Timer";
 
 export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
     const [currentQuizItemIndex, setCurrentQuizItemIndex] = useState<number>(0);
@@ -62,9 +63,17 @@ export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
             </Radio>
         )
     })
+    const failQuestion = () => {
+        setProgress([...progress, false]);
+        setQuestionStatus('invalid');
+    }
     return (
         <Flex direction={"column"} alignItems={"center"} justify={"center"}>
             {renderProgressBar()}
+            {questionStatus === "unanswered" &&
+                (<Box position={"absolute"} top={50} right={50}>
+                    <Timer max={10} onFinished={failQuestion} size="120px" />
+                </Box>)}
             <Heading fontSize={"3xl"} mt={100} mb={20} dangerouslySetInnerHTML={{ __html: currentQuizItem.question }} />
             <RadioGroup value={answer} onChange={questionStatus === "unanswered" ? setAnswer : undefined}>
                 <SimpleGrid columns={2} spacing={4}>
