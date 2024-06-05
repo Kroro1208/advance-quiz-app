@@ -11,6 +11,7 @@ import { SetQuizCategory } from "./features/SetQuizCategory";
 import { QuizAPI } from "./api/quiz-api";
 import { SetQuizDifficulty } from "./features/SetQuizDifficulty";
 import { PlayQuiz } from "./features/PlayQuiz/PlayQuiz";
+import { Score } from "./features/Score";
 
 enum Step {
   SetQuestionQuantity,
@@ -33,6 +34,7 @@ export const App = () => {
 
   const [categories, setCategories] = useState<QuizCategory[]>([]);
   const [quiz, setQuiz] = useState<QuizItem[]>([]);
+  const [progress, setProgress] = useState<boolean[]>([]);
 
 
   useEffect(() => {
@@ -91,9 +93,20 @@ export const App = () => {
             }} />
         );
       case Step.Play:
-        return <PlayQuiz quiz={quiz} />
+        return (
+          <PlayQuiz quiz={quiz}
+            onFinished={(progress_: boolean[]) => {
+              setProgress(progress_)
+              setStep(Step.Score);
+            }} />
+        )
       case Step.Score:
-        return <></>
+        return (
+          <Score progress={progress}
+            onNext={() => {
+              setStep(Step.SetQuestionQuantity);
+            }} />
+        )
       default:
         return null;
     }

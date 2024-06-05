@@ -6,7 +6,7 @@ import validAnim from "../../assets/valid.json";
 import invalidAnim from "../../assets/invalid.json";
 import { Timer } from "./Timer";
 
-export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
+export const PlayQuiz = (p: { quiz: QuizItem[], onFinished: (progress: boolean[]) => void }) => {
     const [currentQuizItemIndex, setCurrentQuizItemIndex] = useState<number>(0);
     const [answersList, setAnswersList] = useState<string[]>([]);
     const [answer, setAnswer] = useState<string>();
@@ -87,8 +87,12 @@ export const PlayQuiz = (p: { quiz: QuizItem[] }) => {
                         ? validAnim
                         : invalidAnim}
                 onComplete={() => {
-                    setQuestionStatus("unanswered");
-                    setCurrentQuizItemIndex(currentQuizItemIndex + 1);
+                    if (currentQuizItemIndex < p.quiz.length - 1) {
+                        setQuestionStatus("unanswered");
+                        setCurrentQuizItemIndex(currentQuizItemIndex + 1);
+                    } else {
+                        p.onFinished(progress);
+                    }
                 }} />
         </Flex>
     )
